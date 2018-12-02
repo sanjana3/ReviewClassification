@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
 import sqlite3 as db
 import csv
+import xlwt, xlrd
+from review.models import ReviewTab
+from django.http import HttpResponse
 
 
 def register(request):
@@ -13,25 +16,48 @@ def register(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            # messages.success(request, f'Your account has been created! You are now able to log in')
             return redirect('login')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
 def userhome(request):
-    # with db.connect('db.sqlite3') as conn:
-    #     cur = conn.cursor()
-    #     sql = "SELECT * FROM review_tab"
-    #     cur.execute(sql)
-    #     data = cur.fetchall()
+    export_to_csv(request)
+    wb = xlrd.open_workbook("review.xls")
+    sheet = wb.sheet_by_index(0)
+    rows = []
+    for i in range(1,(sheet.nrows)):
+        row = sheet.row_values(i)
+        row[0]=int(row[0])
+        rows.append(row)
+    context = {
+        'rows': rows,
+    }
+    return render(request, 'users/home.html',context)
+
+def export_to_csv(request):
     # with open('review.csv', 'w', newline='') as f_handle:
     #     writer = csv.writer(f_handle)
-    #     header = ['ID', 'name', 'review','gender','rating']
-    #     writer.writerow(header)
-    #     for row in data:
-    #         writer.writerow(row)
-    return render(request, 'users/home.html')
+    #     writer.writerow(['ID','name','review','gender','rating'])
+    #     r_data = ReviewTab.objects.all().values_list('rid','name','review_data','gender','rating')
+    #     for r in r_data:
+    #         writer.writerow(r)
+    wb = xlwt.Workbook()
+    ws = wb.add_sheet('reviews')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    columns = ['ID','name','review','gender','rating']
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+    font_style = xlwt.XFStyle()
+    rows = ReviewTab.objects.all().values_list('rid','name','review_data','gender','rating')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+    wb.save('review.xls')
+    # print("Done creating CSV")
 
 @login_required
 def profile(request):
