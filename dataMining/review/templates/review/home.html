@@ -1,11 +1,33 @@
 {% extends "review/base.html" %}
 {% block content %}
-<form>
-	<text class="navbar-brand mr-4" align="left">Name:</text><textarea name="name" rows="1" cols="150"></textarea><br>
-        <text class="navbar-brand mr-4" align="left">Review:</text><textarea name="review" rows="5" cols="150">Enter the review here </textarea><br>
-        <div align="center">
-		<input type="submit" value="Submit">
-        	<input type="submit" value="Clear">
-	</div>
-</form> 
+<div class="content-section">
+	<form method="POST">
+		{% csrf_token %}
+		<fieldset class="form-group">
+                <legend class="border-bottom mb-4">Home</legend>
+		</fieldset>
+		<div id="div_id_username" class="form-group"> 
+			<label for="id_username" class="col-form-label  requiredField">
+				Reviewer Name<span class="asteriskField">*</span> 
+			</label> 
+			<div class=""> <input type="text" name="name" autofocus="" maxlength="254" class="textinput textInput form-control" required="" id="id_name"> 
+			</div> 
+		</div>
+		<div id="div_id_username" class="form-group"> 
+				<label for="id_username" class="col-form-label  requiredField">
+					Review<span class="asteriskField">*</span> 
+				</label> 
+				<div class=""> <input type="text" name="review_data" autofocus="" maxlength="5000" class="textinput textInput form-control" required="" id="id_review_data"> 
+				</div> 
+			</div>
+		<div class="form-group">
+				<button class="btn btn-outline-info" type="submit">Submit</button>
+				<button class="btn btn-outline-info" type="clear">Clear</button>
+        </div>
+		<!-- <div align="center">
+			<input type="submit" value="Submit">
+			<input type="submit" value="Clear">
+		</div> -->
+	</form> 
+</div>
 {% endblock content %}

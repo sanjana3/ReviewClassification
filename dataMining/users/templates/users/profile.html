@@ -1,0 +1,14 @@
+{% extends "review/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="https://specials-images.forbesimg.com/imageserve/55b914f5e4b05c2c343242c1/300x300.jpg?fit=scale&background=000000">
+        <div class="media-body">
+          <h2 class="account-heading">{{ user.username }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+        </div>
+      </div>
+      <!-- FORM HERE -->
+    </div>
+{% endblock content %}
