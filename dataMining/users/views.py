@@ -8,7 +8,7 @@ import csv
 import xlwt, xlrd
 from review.models import ReviewTab
 from django.http import HttpResponse
-
+from final import _functionTorun
 
 def register(request):
     if request.method == 'POST':
@@ -23,6 +23,7 @@ def register(request):
 
 def userhome(request):
     export_to_csv(request)
+    _functionTorun()
     wb = xlrd.open_workbook("review.xls")
     sheet = wb.sheet_by_index(0)
     rows = []
