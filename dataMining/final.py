@@ -269,7 +269,7 @@ def _functionTorun():
         wb = xlrd.open_workbook("review.xls")
         sheet = wb.sheet_by_index(0)
         final_data = []
-        for idx in range(1,len(i)):
+        for idx in range(1,len(i)+1):
             print(idx, genders[count], ratings[count])
             row = sheet.row_values(idx)
             row[3] = genders[count]
