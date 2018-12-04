@@ -3,10 +3,12 @@
 
 # In[109]:
 
-
+import matplotlib
+# matplotlib.use("TkAgg")
+from matplotlib import pyplot as plt
+plt.switch_backend('SVG') 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import pickle
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from gender_predictor.GenderClassifier import classify_gender
@@ -18,7 +20,6 @@ import xlrd, xlwt
 import xlsxwriter
 from xlutils.copy import copy
 from matplotlib.ticker import FuncFormatter
-import matplotlib.pyplot as plt
 
 
 # In[24]:
@@ -211,7 +212,7 @@ def _graph_gen():
     plt.setp(autotexts, size=15, weight="bold")
 
     ax.set_title("Gender Statistics")
-    fig.savefig('pie.png')
+    fig.savefig('users/static/users/pie.png')
     
     x = np.arange(3)
     money = [ratings_graph[1], ratings_graph[2], ratings_graph[3]]
@@ -226,9 +227,10 @@ def _graph_gen():
     plt.ylabel('Ratings Count')
     plt.title('Classification Counts')
     plt.xticks(x, ('-Ve(Ratings of 1 or 2)', 'Neutral(Ratings of 3)', '+ve(Ratings of 4 or 5)'))
-    fig.savefig('bar.png')
-
-
+    fig.savefig('users/static/users/bar.png')
+    # matplotlib.pyplot.close(fig)
+    plt.close(fig)
+    # return ""
 # In[230]:
 
 
@@ -267,7 +269,7 @@ def _functionTorun():
         wb = xlrd.open_workbook("review.xls")
         sheet = wb.sheet_by_index(0)
         final_data = []
-        for idx in range(1,len(i)):
+        for idx in range(1,len(i)+1):
             print(idx, genders[count], ratings[count])
             row = sheet.row_values(idx)
             row[3] = genders[count]
@@ -288,4 +290,4 @@ def _functionTorun():
             s.write(i,3,ind[-2])
             s.write(i,4,str(ind[-1]))
         wb.save('review.xls') 
-    # _graph_gen()
+    _graph_gen()
