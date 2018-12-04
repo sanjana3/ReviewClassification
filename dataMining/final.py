@@ -4,8 +4,9 @@
 # In[109]:
 
 import matplotlib
-matplotlib.use("TkAgg")
+# matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
+plt.switch_backend('SVG') 
 import pandas as pd
 import numpy as np
 import pickle
@@ -211,7 +212,7 @@ def _graph_gen():
     plt.setp(autotexts, size=15, weight="bold")
 
     ax.set_title("Gender Statistics")
-    fig.savefig('pie.png')
+    fig.savefig('users/static/users/pie.png')
     
     x = np.arange(3)
     money = [ratings_graph[1], ratings_graph[2], ratings_graph[3]]
@@ -226,10 +227,10 @@ def _graph_gen():
     plt.ylabel('Ratings Count')
     plt.title('Classification Counts')
     plt.xticks(x, ('-Ve(Ratings of 1 or 2)', 'Neutral(Ratings of 3)', '+ve(Ratings of 4 or 5)'))
-    fig.savefig('bar.png')
+    fig.savefig('users/static/users/bar.png')
     # matplotlib.pyplot.close(fig)
     plt.close(fig)
-    return ""
+    # return ""
 # In[230]:
 
 
