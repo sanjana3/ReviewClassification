@@ -3,10 +3,11 @@
 
 # In[109]:
 
-
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import pickle
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from gender_predictor.GenderClassifier import classify_gender
@@ -18,7 +19,6 @@ import xlrd, xlwt
 import xlsxwriter
 from xlutils.copy import copy
 from matplotlib.ticker import FuncFormatter
-import matplotlib.pyplot as plt
 
 
 # In[24]:
@@ -227,8 +227,9 @@ def _graph_gen():
     plt.title('Classification Counts')
     plt.xticks(x, ('-Ve(Ratings of 1 or 2)', 'Neutral(Ratings of 3)', '+ve(Ratings of 4 or 5)'))
     fig.savefig('bar.png')
-
-
+    # matplotlib.pyplot.close(fig)
+    plt.close(fig)
+    return ""
 # In[230]:
 
 
@@ -288,4 +289,4 @@ def _functionTorun():
             s.write(i,3,ind[-2])
             s.write(i,4,str(ind[-1]))
         wb.save('review.xls') 
-    # _graph_gen()
+    _graph_gen()
