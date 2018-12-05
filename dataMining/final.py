@@ -120,14 +120,15 @@ def _labeling(df):
 def _callVecs(data_sample, which):
     
     if which == 'cv':
-        Cvec = CountVectorizer(analyzer='word', token_pattern=r'\w{1,}', max_features=1000).fit(data_sample['text'])
+        Cvec = CountVectorizer(analyzer='word', token_pattern=r'\w{1,}', max_features=500).fit(data_sample['text'])
         filename = 'cv.pkl'
         pickle.dump(Cvec, open(filename, 'wb'))
         cv_df = _vectorizers('cv',data_sample,'train', Cvec)
-        _knn(3, 1000, cv_df, 'cv_knn.pkl')
+        print(cv_df.shape)
+        # _knn(3, 1000, cv_df, 'cv_knn.pkl')
         
     elif which == 'tf':
-        tfidf_vec = TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', max_features=1000).fit(data_sample['text'])
+        tfidf_vec = TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', max_features=500).fit(data_sample['text'])
         filename = 'tfVec.pkl'
         pickle.dump(tfidf_vec, open(filename, 'wb'))
         tf_df = _vectorizers('tf',data_sample,'train', tfidf_vec)
@@ -226,7 +227,7 @@ def _graph_gen():
     plt.xlabel('Class Label')
     plt.ylabel('Ratings Count')
     plt.title('Classification Counts')
-    plt.xticks(x, ('-Ve(Ratings of 1 or 2)', 'Neutral(Ratings of 3)', '+ve(Ratings of 4 or 5)'))
+    plt.xticks(x, ('-Ve(Rating 1)', 'Neutral(Rating 2)', '+ve(Rating 3)'))
     fig.savefig('users/static/users/bar.png')
     # matplotlib.pyplot.close(fig)
     plt.close(fig)
@@ -237,7 +238,7 @@ def _graph_gen():
 def _functionTorun():
 
     file = 'review.xls'
-    dout = open('cv_knn.pkl', 'rb')
+    dout = open('rand.pkl', 'rb')
     model = pickle.load(dout)
     dout.close()
     
@@ -277,8 +278,6 @@ def _functionTorun():
             count += 1
             row[0] = int(row[0])
             final_data.append(row)
-#         for each in final_data:
-#             print(each)
 
         rb = xlrd.open_workbook('review.xls')
         wb = copy(rb)
