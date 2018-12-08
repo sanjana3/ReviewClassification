@@ -21,20 +21,45 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
-def userhome(request):
-    export_to_csv(request)
-    _functionTorun()
-    wb = xlrd.open_workbook("review.xls")
-    sheet = wb.sheet_by_index(0)
-    rows = []
-    for i in range(1,(sheet.nrows)):
-        row = sheet.row_values(i)
-        row[0]=int(row[0])
-        rows.append(row)
-    context = {
-        'rows': rows,
-    }
-    return render(request, 'users/home.html',context)
+def usermain(request):
+    if(request.GET.get('mybtn')):
+        # print("I am in IF")
+        export_to_csv(request)
+        _functionTorun()
+        wb = xlrd.open_workbook("review.xls")
+        sheet = wb.sheet_by_index(0)
+        rows = []
+        for i in range(1,(sheet.nrows)):
+            row = sheet.row_values(i)
+            row[0]=int(row[0])
+            rows.append(row)
+        context = {
+            'rows': rows,
+        }
+        return render(request, 'users/home.html',context)
+    else:
+        # print("I am in else")
+        return render(request, 'users/main.html')
+
+# def userhome(request):
+#     if(request.GET.get('mybtn')):
+#         print("I am in IF")
+#         export_to_csv(request)
+#         _functionTorun()
+#         wb = xlrd.open_workbook("review.xls")
+#         sheet = wb.sheet_by_index(0)
+#         rows = []
+#         for i in range(1,(sheet.nrows)):
+#             row = sheet.row_values(i)
+#             row[0]=int(row[0])
+#             rows.append(row)
+#         context = {
+#             'rows': rows,
+#         }
+#         return render(request, 'users/home.html',context)
+#     else:
+#         print("I am in else")
+#         return render(request, 'users/main.html')
 
 def export_to_csv(request):
     # with open('review.csv', 'w', newline='') as f_handle:
